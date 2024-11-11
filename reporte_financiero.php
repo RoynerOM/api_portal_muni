@@ -1,12 +1,12 @@
 <?php
 header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: http://localhost:5173"); 
+header("Access-Control-Allow-Origin: http://localhost:5173");
 include 'db.php';
 
-$uploadFileDir = $_SERVER['DOCUMENT_ROOT'] . '/documentos/presupuesto/';
+$uploadFileDir = $_SERVER['DOCUMENT_ROOT'] . '/documentos/reporte_financiero/';
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $stmt = $pdo->query("SELECT * FROM Presupuesto;");
+    $stmt = $pdo->query("SELECT * FROM Reporte_Financiero;");
     $presupuestos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     echo json_encode($presupuestos);
 }
@@ -21,23 +21,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (in_array($doc_type, $allowed_types)) {
             $doc_path = $uploadFileDir . $doc_name;
-            $doc_url = 'https://muniupala.go.cr/documentos/presupuesto/' . $doc_name;
+            $doc_url = 'https://muniupala.go.cr/documentos/reporte_financiero/' . $doc_name;
 
             // Mover el archivo al directorio de subida
             if (move_uploaded_file($doc_temp, $doc_path)) {
                 // Extraer y sanitizar los datos del POST
                 $year = isset($_POST['year']) ? $_POST['year'] : '';
-                $tipo = isset($_POST['tipo']) ? $_POST['tipo'] : '';
                 $fecha = isset($_POST['fecha']) ? $_POST['fecha'] : '';
                 $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : '';
 
                 // Consulta SQL
-                $sql = "INSERT INTO Presupuesto (year, tipo, fecha, url, nombre) VALUES (:year, :tipo, :fecha, :url, :nombre)";
+                $sql = "INSERT INTO Reporte_Financiero (year, fecha, url, nombre) VALUES (:year, :fecha, :url, :nombre)";
                 $stmt = $pdo->prepare($sql);
-                
+
                 // Asignación de parámetros
                 $stmt->bindParam(':year', $year);
-                $stmt->bindParam(':tipo', $tipo);
                 $stmt->bindParam(':fecha', $fecha);
                 $stmt->bindParam(':url', $doc_url);
                 $stmt->bindParam(':nombre', $doc_name);
@@ -47,30 +45,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo json_encode([
                         'status' => 'success',
                         'message' => 'Presupuesto guardado correctamente.',
-                        'url' => $doc_url
+                        'url' => $doc_url,
                     ]);
                 } else {
                     echo json_encode([
                         'status' => 'error',
-                        'message' => 'Error al guardar el presupuesto en la base de datos.'
+                        'message' => 'Error al guardar el presupuesto en la base de datos.',
                     ]);
                 }
             } else {
                 echo json_encode([
                     'status' => 'error',
-                    'message' => 'Error al mover el archivo.'
+                    'message' => 'Error al mover el archivo.',
                 ]);
             }
         } else {
             echo json_encode([
                 'status' => 'error',
-                'message' => 'Tipo de archivo no permitido. Solo se permiten PDF, DOC, y DOCX.'
+                'message' => 'Tipo de archivo no permitido. Solo se permiten PDF, DOC, y DOCX.',
             ]);
         }
     } else {
         echo json_encode([
             'status' => 'error',
-            'message' => 'No se ha subido ningún archivo o ha ocurrido un error en la carga.'
+            'message' => 'No se ha subido ningún archivo o ha ocurrido un error en la carga.',
         ]);
     }
 }
@@ -82,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
 
     if ($id) {
         // Consultar para obtener el URL del documento antes de eliminarlo
-        $sql = "SELECT url FROM Presupuesto WHERE id = :id";
+        $sql = "SELECT url FROM Reporte_Financiero WHERE id = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
@@ -96,20 +94,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
             }
 
             // Eliminar el registro de la base de datos
-            $sql = "DELETE FROM Presupuesto WHERE id = :id";
+            $sql = "DELETE FROM Reporte_Financiero WHERE id = :id";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':id', $id);
             if ($stmt->execute()) {
-                echo json_encode(['status' => 'success', 'message' => 'Presupuesto eliminado correctamente.']);
+                echo json_encode(['status' => 'success', 'message' => 'Reporte Financiero  eliminado correctamente.']);
             } else {
-                echo json_encode(['status' => 'error', 'message' => 'Error al eliminar el presupuesto en la base de datos.']);
+                echo json_encode(['status' => 'error', 'message' => 'Error al eliminar el reporte en la base de datos.']);
             }
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Presupuesto no encontrado.']);
+            echo json_encode(['status' => 'error', 'message' => 'Reporte Financiero  no encontrado.']);
         }
     } else {
         echo json_encode(['status' => 'error', 'message' => 'ID no proporcionado.']);
     }
     exit;
 }
-?>
