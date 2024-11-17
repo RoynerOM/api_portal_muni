@@ -3,10 +3,10 @@ header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: http://localhost:5173");
 include 'db.php';
 
-$uploadFileDir = $_SERVER['DOCUMENT_ROOT'] . '/documentos/reporte_financiero/';
+$uploadFileDir = $_SERVER['DOCUMENT_ROOT'] . '/documentos/plan_sectorial/';
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $stmt = $pdo->query("SELECT * FROM Reporte_Financiero;");
+    $stmt = $pdo->query("SELECT * FROM Plan_Sectorial;");
     $presupuestos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     echo json_encode($presupuestos);
 }
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (in_array($doc_type, $allowed_types)) {
             $doc_path = $uploadFileDir . $doc_name;
-            $doc_url = 'https://muniupala.go.cr/documentos/reporte_financiero/' . $doc_name;
+            $doc_url = 'https://muniupala.go.cr/documentos/plan_sectorial/' . $doc_name;
 
             // Mover el archivo al directorio de subida
             if (move_uploaded_file($doc_temp, $doc_path)) {
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : '';
 
                 // Consulta SQL
-                $sql = "INSERT INTO Reporte_Financiero (year, fecha, url, nombre) VALUES (:year, :fecha, :url, :nombre)";
+                $sql = "INSERT INTO Plan_Sectorial (year, fecha, url, nombre) VALUES (:year, :fecha, :url, :nombre)";
                 $stmt = $pdo->prepare($sql);
 
                 // Asignación de parámetros
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
 
     if ($id) {
         // Consultar para obtener el URL del documento antes de eliminarlo
-        $sql = "SELECT url FROM Reporte_Financiero WHERE id = :id";
+        $sql = "SELECT url FROM Plan_Sectorial WHERE id = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
             }
 
             // Eliminar el registro de la base de datos
-            $sql = "DELETE FROM Reporte_Financiero WHERE id = :id";
+            $sql = "DELETE FROM Plan_Sectorial WHERE id = :id";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':id', $id);
             if ($stmt->execute()) {

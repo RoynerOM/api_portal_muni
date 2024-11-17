@@ -28,19 +28,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Extraer y sanitizar los datos del POST
                 $year = isset($_POST['year']) ? $_POST['year'] : '';
                 $tipo = isset($_POST['tipo']) ? $_POST['tipo'] : '';
+                $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : '';
                 $fecha = isset($_POST['fecha']) ? $_POST['fecha'] : '';
                 $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : '';
 
                 // Consulta SQL
-                $sql = "INSERT INTO Presupuesto (year, tipo, fecha, url, nombre) VALUES (:year, :tipo, :fecha, :url, :nombre)";
+                    $sql = "INSERT INTO Presupuesto (year, tipo,categoria, fecha, url, nombre) VALUES (:year, :tipo,:categoria, :fecha, :url, :nombre)";
                 $stmt = $pdo->prepare($sql);
                 
                 // Asignación de parámetros
                 $stmt->bindParam(':year', $year);
                 $stmt->bindParam(':tipo', $tipo);
+                $stmt->bindParam(':categoria', $categoria);
                 $stmt->bindParam(':fecha', $fecha);
                 $stmt->bindParam(':url', $doc_url);
-                $stmt->bindParam(':nombre', $doc_name);
+                $stmt->bindParam(':nombre', $nombre);
 
                 // Ejecutar la consulta
                 if ($stmt->execute()) {
