@@ -49,6 +49,7 @@ CREATE TABLE Reporte_Financiero (
 --Falta documentar
 CREATE TABLE Plan_Institucional (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    tipo ENUM('Plan estratégico/ institucional', 'Plan anual operativo', 'Otros planes específicos o sectoriales') NOT NULL,
     fecha DATE NOT NULL,
     year YEAR NOT NULL,
     url VARCHAR(255),
@@ -56,17 +57,9 @@ CREATE TABLE Plan_Institucional (
 );
 
 --Falta documentar
-CREATE TABLE Plan_Anual_Operativo (
+CREATE TABLE Informes_Cumplimientos (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    year YEAR NOT NULL,
-    fecha DATE NOT NULL,
-    url VARCHAR(255),
-    nombre VARCHAR(100) NOT NULL
-);
-
---
-CREATE TABLE Plan_Sectorial (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    tipo ENUM('Informes de cumplimiento', 'Informe anual de gestión', 'Informe final de gestión','Histórico de informes anuales','Informes de seguimiento a las recomendaciones') NOT NULL,
     year YEAR NOT NULL,
     fecha DATE NOT NULL,
     url VARCHAR(255),

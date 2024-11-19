@@ -3,10 +3,10 @@ header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: http://localhost:5173");
 include 'db.php';
 
-$uploadFileDir = $_SERVER['DOCUMENT_ROOT'] . '/documentos/plan_anual_operativo/';
+$uploadFileDir = $_SERVER['DOCUMENT_ROOT'] . '/documentos/informes_cumplimientos/';
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $stmt = $pdo->query("SELECT * FROM Plan_Anual_Operativo;");
+    $stmt = $pdo->query("SELECT * FROM Informes_Cumplimientos;");
     $presupuestos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     echo json_encode($presupuestos);
 }
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (in_array($doc_type, $allowed_types)) {
             $doc_path = $uploadFileDir . $doc_name;
-            $doc_url = 'https://muniupala.go.cr/documentos/plan_anual_operativo/' . $doc_name;
+            $doc_url = 'https://muniupala.go.cr/documentos/informes_cumplimientos/' . $doc_name;
 
             // Mover el archivo al directorio de subida
             if (move_uploaded_file($doc_temp, $doc_path)) {
@@ -29,9 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $year = isset($_POST['year']) ? $_POST['year'] : '';
                 $fecha = isset($_POST['fecha']) ? $_POST['fecha'] : '';
                 $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : '';
+                $tipo = isset($_POST['tipo']) ? $_POST['tipo'] : '';
 
                 // Consulta SQL
-                $sql = "INSERT INTO Plan_Anual_Operativo (year, fecha, url, nombre) VALUES (:year, :fecha, :url, :nombre)";
+                $sql = "INSERT INTO Informes_Cumplimientos (year,tipo, fecha, url, nombre) VALUES (:year,:tipo, :fecha, :url, :nombre)";
                 $stmt = $pdo->prepare($sql);
 
                 // Asignación de parámetros
@@ -39,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->bindParam(':fecha', $fecha);
                 $stmt->bindParam(':url', $doc_url);
                 $stmt->bindParam(':nombre', $nombre);
+                $stmt->bindParam(':tipo', $tipo);
 
                 // Ejecutar la consulta
                 if ($stmt->execute()) {
@@ -80,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
 
     if ($id) {
         // Consultar para obtener el URL del documento antes de eliminarlo
-        $sql = "SELECT url FROM Plan_Anual_Operativo WHERE id = :id";
+        $sql = "SELECT url FROM Informes_Cumplimientos WHERE id = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
@@ -94,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
             }
 
             // Eliminar el registro de la base de datos
-            $sql = "DELETE FROM Plan_Anual_Operativo WHERE id = :id";
+            $sql = "DELETE FROM Informes_Cumplimientos WHERE id = :id";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':id', $id);
             if ($stmt->execute()) {

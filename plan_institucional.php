@@ -29,9 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $year = isset($_POST['year']) ? $_POST['year'] : '';
                 $fecha = isset($_POST['fecha']) ? $_POST['fecha'] : '';
                 $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : '';
+                $tipo = isset($_POST['tipo']) ? $_POST['tipo'] : '';
 
                 // Consulta SQL
-                $sql = "INSERT INTO Plan_Institucional (year, fecha, url, nombre) VALUES (:year, :fecha, :url, :nombre)";
+                $sql = "INSERT INTO Plan_Institucional (year,tipo, fecha, url, nombre) VALUES (:year,:tipo, :fecha, :url, :nombre)";
                 $stmt = $pdo->prepare($sql);
 
                 // Asignación de parámetros
@@ -39,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->bindParam(':fecha', $fecha);
                 $stmt->bindParam(':url', $doc_url);
                 $stmt->bindParam(':nombre', $nombre);
+                $stmt->bindParam(':tipo', $tipo);
 
                 // Ejecutar la consulta
                 if ($stmt->execute()) {
