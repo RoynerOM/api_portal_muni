@@ -65,3 +65,26 @@ CREATE TABLE Informes_Cumplimientos (
     url VARCHAR(255),
     nombre VARCHAR(100) NOT NULL
 );
+
+
+--Falta documentar
+-- EL HISTORICO SE SACA DEL ESPECIAL Y ANUAL DE LOS ULTIMOS 5 AÑOS
+CREATE TABLE Informes_Institucionales (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    tipo ENUM('Especiales', 'Anuales', 'Archivo','Calificación de personal') NOT NULL,
+    fecha DATE NOT NULL,
+    year YEAR NOT NULL,
+    url VARCHAR(255),
+    nombre VARCHAR(100) NOT NULL
+);
+
+
+CREATE TABLE Informes_Personal (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    tipo ENUM('Actividades', 'Viajes') NOT NULL,
+    fecha DATE NOT NULL,
+    year YEAR NOT NULL,
+    url VARCHAR(255),
+    nombre VARCHAR(100) NOT NULL
+);
+
