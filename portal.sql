@@ -27,16 +27,6 @@ CREATE TABLE Ejecucion_Presupuestaria (
     es_historico BOOLEAN DEFAULT FALSE
 );
 
-/*
-CREATE TABLE Auditoria_Gasto (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    año YEAR NOT NULL,
-    es_historico BOOLEAN DEFAULT FALSE,
-    fecha DATE NOT NULL,
-    url VARCHAR(255),
-    nombre VARCHAR(100) NOT NULL
-);
-*/
 --Falta documentar
 CREATE TABLE Reporte_Financiero (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -78,7 +68,7 @@ CREATE TABLE Informes_Institucionales (
     nombre VARCHAR(100) NOT NULL
 );
 
-
+--Falta documentar
 CREATE TABLE Informes_Personal (
     id INT PRIMARY KEY AUTO_INCREMENT,
     tipo ENUM('Actividades', 'Viajes') NOT NULL,
@@ -86,5 +76,17 @@ CREATE TABLE Informes_Personal (
     year YEAR NOT NULL,
     url VARCHAR(255),
     nombre VARCHAR(100) NOT NULL
-);
+); 
 
+
+--Falta documentar
+-- Filtrar o seleccionar actas y acuerdos por año
+CREATE TABLE Temas_Acuerdos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    tipo ENUM('Acta', 'Acuerdo','Anexo','Orden del día') NOT NULL,
+    fecha DATE NOT NULL,
+    year YEAR NOT NULL,
+    url VARCHAR(255),
+    nombre VARCHAR(100) NOT NULL
+); 
+ 
