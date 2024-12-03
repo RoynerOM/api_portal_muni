@@ -81,9 +81,19 @@ CREATE TABLE Informes_Personal (
 
 --Falta documentar
 -- Filtrar o seleccionar actas y acuerdos por año
-CREATE TABLE Temas_Acuerdos (
+CREATE TABLE Actas_Orden (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    tipo ENUM('Acta', 'Acuerdo','Anexo','Orden del día') NOT NULL,
+    tipo ENUM('Acta','Orden del día') NOT NULL,
+    fecha DATE NOT NULL,
+    year YEAR NOT NULL,
+    url VARCHAR(255),
+    nombre VARCHAR(100) NOT NULL
+); 
+
+--Filtrar Por actas y seleccionar el acta relacionado
+CREATE TABLE Acuerdos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    actas INT NOT NULL,
     fecha DATE NOT NULL,
     year YEAR NOT NULL,
     url VARCHAR(255),

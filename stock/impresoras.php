@@ -25,11 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
    LEFT JOIN
        entradas e ON i.serie = e.impresoraId
    LEFT JOIN
-       salidas s ON i.serie = s.impresoraId
+       salidas s ON i.serie = s.impresoraId where I.disponible=TRUE
    GROUP BY
        i.serie
    ORDER BY
-       i.modelo where disponible=TRUE;
+       i.modelo;
    ";
 
    // Ejecutar la consulta
@@ -59,8 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
            "tintas" => $tintas
        ];
    }
-
-   // Devolver la respuesta en formato JSON
    echo json_encode($resultado, JSON_PRETTY_PRINT);
 }
 
@@ -79,5 +77,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([$serie, $modelo, $tipo, $modeloTinta, $stock, $disponible]);
 
     echo json_encode(["message" => "Impresora creada con éxito"]);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    $data = json_decode(file_get_contents("php://input"), true);
+    $serie = $data['serie'];
+    $modelo = $data['modelo'];
+    $tipo = $data['tipo'];
+    $modeloTinta = $data['modeloTinta'];
+    $sql = "UPDATE impresoras SET modelo = ?, tipo = ?, modeloTinta = ? WHERE serie = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([ $modelo, $tipo, $modeloTinta, $serie]);
+    echo json_encode(["message" => "Impresora actualizada con éxito"]);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id = $data['serie']; 
+    $sql = "UPDATE impresoras SET disponible = 1 WHERE serie = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$id]);
+    echo json_encode(["message" => "Impresora eliminada con éxito"]);
 }
 ?>
