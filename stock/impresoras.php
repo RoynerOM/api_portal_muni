@@ -14,12 +14,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
        i.modeloTinta,
        i.stock,
        i.disponible,
-       SUM(CASE WHEN e.tipo = 'Negro' THEN e.stock ELSE 0 END) AS tinta_negra,
-       SUM(CASE WHEN e.tipo = 'Cyan' THEN e.stock ELSE 0 END) AS tinta_cyan,
-       SUM(CASE WHEN e.tipo = 'Magenta' THEN e.stock ELSE 0 END) AS tinta_magenta,
-       SUM(CASE WHEN e.tipo = 'Amarillo' THEN e.stock ELSE 0 END) AS tinta_amarillo,
-       SUM(CASE WHEN e.tipo = 'Cinta' THEN e.stock ELSE 0 END) AS tinta_cinta,
-       SUM(CASE WHEN e.tipo = 'Otros' THEN e.stock ELSE 0 END) AS tinta_otros
+       COALESCE(SUM(CASE WHEN e.tipo = 'Negro' THEN e.stock ELSE 0 END), 0) AS tinta_negro,
+       COALESCE(SUM(CASE WHEN e.tipo = 'Cyan' THEN e.stock ELSE 0 END), 0) AS tinta_cyan,
+       COALESCE(SUM(CASE WHEN e.tipo = 'Magenta' THEN e.stock ELSE 0 END), 0) AS tinta_magenta,
+       COALESCE(SUM(CASE WHEN e.tipo = 'Amarillo' THEN e.stock ELSE 0 END), 0) AS tinta_amarillo,
+       COALESCE(SUM(CASE WHEN e.tipo = 'Cinta' THEN e.stock ELSE 0 END), 0) AS tinta_cinta,
+       COALESCE(SUM(CASE WHEN e.tipo = 'Otros' THEN e.stock ELSE 0 END), 0) AS tinta_otros
    FROM
        impresoras i
    LEFT JOIN
