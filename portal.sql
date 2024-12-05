@@ -93,7 +93,7 @@ CREATE TABLE Actas_Orden (
 --Filtrar Por actas y seleccionar el acta relacionado
 CREATE TABLE Acuerdos (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    actas INT NOT NULL,
+    actaId INT NOT NULL,
     fecha DATE NOT NULL,
     year YEAR NOT NULL,
     url VARCHAR(255),
