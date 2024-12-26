@@ -100,3 +100,15 @@ CREATE TABLE Acuerdos (
     nombre VARCHAR(100) NOT NULL
 ); 
  
+
+ ---
+
+
+CREATE TABLE directorio_telefonico (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    departamento VARCHAR(255) NOT NULL,
+    telefono VARCHAR(20) NOT NULL,
+    extension VARCHAR(10) DEFAULT NULL,
+    email VARCHAR(255) DEFAULT NULL
+);
